@@ -7,7 +7,8 @@ from joblib import Parallel, delayed
 import streamlit as st
 import xlsxwriter
 from io import BytesIO
-
+import nltk
+nltk.download('punkt')
 # Function to check if the article is in English
 def is_english(text):
     lang, _ = classify(text)
@@ -104,11 +105,7 @@ if st.sidebar.button("Search"):
         # Filter out None values (articles not in English)
         results_list = [result for result in results_list if result is not None]
         # Process articles sequentially without joblib
-        '''results_list = []
-        for article in news_results:
-            result = process_article(article)
-            if result is not None:
-                results_list.append(result)'''
+  
 
 
         # Create a DataFrame from the list of results
