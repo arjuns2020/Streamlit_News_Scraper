@@ -1,0 +1,9 @@
+os
+pandas
+gnews
+datetime
+langid
+joblib
+streamlit
+xlsxwriter
+io
