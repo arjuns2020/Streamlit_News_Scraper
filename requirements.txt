@@ -8,3 +8,4 @@ streamlit
 newspaper3k
 io
 XlsxWriter
+nltk
