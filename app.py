@@ -99,10 +99,17 @@ if st.sidebar.button("Search"):
         news_results = google_news.get_news(query)
 
         # Parallel processing using joblib
-        results_list = Parallel(n_jobs=-1)(delayed(process_article)(article) for article in news_results)
+        #results_list = Parallel(n_jobs=-1)(delayed(process_article)(article) for article in news_results)
 
         # Filter out None values (articles not in English)
-        results_list = [result for result in results_list if result is not None]
+        #results_list = [result for result in results_list if result is not None]
+        # Process articles sequentially without joblib
+        results_list = []
+        for article in news_results:
+            result = process_article(article)
+            if result is not None:
+                results_list.append(result)
+
 
         # Create a DataFrame from the list of results
         df = pd.DataFrame(results_list)
