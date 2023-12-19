@@ -30,6 +30,7 @@ mypy-extensions==1.0.0
 nest-asyncio==1.5.8
 networkx==3.2.1
 nltk==3.8.1
+newspaper3k
 numexpr==2.8.8
 numpy==1.26.2
 openpyxl==3.1.2
