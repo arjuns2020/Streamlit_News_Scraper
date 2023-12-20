@@ -75,7 +75,7 @@ def process_article(article):
         return None
 
 # Streamlit UI
-st.title("News Scraper and Analyzer")
+st.title("News Scraping using Keywords")
 st.sidebar.header("Search Parameters")
 
 # User input
