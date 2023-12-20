@@ -116,7 +116,7 @@ if st.sidebar.button("Search"):
 
         # Display results
         st.subheader("Results")
-        st.subheader("Click Download Filtered Results to save to Excel File")
+        st.subheader("Click Download Filtered Results near search button to save results to Excel File")
         st.dataframe(df)
 
         # Download button
