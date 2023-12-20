@@ -79,7 +79,7 @@ st.title("News Scraper and Analyzer")
 st.sidebar.header("Search Parameters")
 
 # User input
-query = st.sidebar.text_input("Enter Keywords (separated by space)", 'datacentre cloud')
+query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud')
 start_date = st.sidebar.date_input("Enter Start Date", datetime(2023, 11, 1))
 end_date = st.sidebar.date_input("Enter End Date", datetime(2023, 12, 30))
 
