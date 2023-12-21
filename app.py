@@ -121,7 +121,7 @@ if st.sidebar.button("Search"):
 
         # Download button
         # Save the filtered DataFrame to an Excel file
-        excel_file_path_filtered = f"{query.split()[0]}_{query.split()[1]}_{start_date.strftime('%Y-%m-%d')}_{end_date.strftime('%Y-%m-%d')}_filtered.xlsx"
+        excel_file_path_filtered = f"{query.split()[0]}_{query.split()[1]}_filtered.xlsx"
         df.to_excel(excel_file_path_filtered, index=False, engine='openpyxl')
 
         # Create an in-memory Excel file for the filtered DataFrame
