@@ -132,7 +132,7 @@ if st.sidebar.button("Search"):
         st.sidebar.download_button(
             label="Download Filtered Results",
             data=output_filtered.getvalue(),
-            file_name=f"{query.split()[0]}_{query.split()[1]}_{start_date.strftime('%Y-%m-%d')}_{end_date.strftime('%Y-%m-%d')}_filtered.xlsx",
+            file_name=f"{query.split()[0]}_{query.split()[1]}_filtered.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             key="filtered_excel",
             help="Click to download the filtered results"
