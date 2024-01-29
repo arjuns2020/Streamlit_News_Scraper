@@ -15,7 +15,8 @@ import matplotlib.pyplot as plt
 from docx import Document
 from docx.shared import Inches
 from io import BytesIO
-
+import nltk
+nltk.download('punkt')
 # Function to check if the article is in English
 def is_english(text):
     lang, _ = classify(text)
