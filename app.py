@@ -90,7 +90,7 @@ end_date_default = datetime.now().date()
 start_date_default = end_date_default - timedelta(days=7)
 
 # User input
-query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud datacentre')
+query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud datacenter')
 start_date = st.sidebar.date_input("Enter Start Date", start_date_default)
 end_date = st.sidebar.date_input("Enter End Date",end_date_default)
 
