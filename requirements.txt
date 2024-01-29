@@ -1,6 +1,5 @@
-textwrap
-wordcloud
-docx
+wordcloud==1.9.3
+python-docx==1.1.0
 langid==1.1.6
 bs4==0.0.1
 cachetools==5.3.2
