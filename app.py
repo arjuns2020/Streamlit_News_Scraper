@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from gnews import GNews
-from datetime import datetime
+from datetime import datetime,timedelta
 from langid import classify
 from joblib import Parallel, delayed
 import streamlit as st
@@ -79,9 +79,21 @@ st.title("Keyword-driven News Aggregator.")
 st.sidebar.header("Search Parameters")
 
 # User input
-query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud')
-start_date = st.sidebar.date_input("Enter Start Date", datetime(2023, 11, 1))
-end_date = st.sidebar.date_input("Enter End Date", datetime(2023, 12, 30))
+#query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud')
+#start_date = st.sidebar.date_input("Enter Start Date", datetime(2023, 11, 1))
+#end_date = st.sidebar.date_input("Enter End Date", datetime(2023, 12, 30))
+
+
+# date calculation
+# Calculate default start and end dates
+end_date_default = datetime.now().date()
+start_date_default = end_date_default - timedelta(days=7)
+
+# User input
+query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud datacentre')
+start_date = st.sidebar.date_input("Enter Start Date", start_date_default)
+end_date = st.sidebar.date_input("Enter End Date",end_date_default)
+
 
 # Set the language filter
 GNews.language = 'en'
