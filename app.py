@@ -16,6 +16,8 @@ from docx import Document
 from docx.shared import Inches
 from io import BytesIO
 import nltk
+from io import StringIO
+
 nltk.download('punkt')
 # Function to check if the article is in English
 def is_english(text):
@@ -137,6 +139,19 @@ def main():
     if 'df' in st.session_state and not st.session_state.df.empty:
         st.subheader("Results")
         st.dataframe(st.session_state.df)
+        
+        # Convert DataFrame to CSV
+        towrite = BytesIO()
+        st.session_state.df.to_csv(towrite, index=False, header=True)
+        towrite.seek(0)
+
+        # Create a link for downloading the CSV file
+        st.download_button(
+            label="Download CSV",
+            data=towrite,
+            file_name="search_results.csv",
+            mime='text/csv',
+    )
     
     if 'output_doc' in st.session_state:
         file_name = f"{query.replace(' ', '_')}_cluster_summary.docx"
