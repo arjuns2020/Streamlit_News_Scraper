@@ -55,15 +55,6 @@ def process_article(article):
         result.update(full_article)
     return result
 
-def setup_streamlit_ui():
-    st.title("News Scraper and Analyzer")
-    st.sidebar.header("Search Parameters")
-    query = st.sidebar.text_input("Enter Keywords (separated by space)", 'aws cloud datacenter')
-    end_date_default = datetime.now().date()
-    start_date_default = end_date_default - timedelta(days=7)
-    start_date = st.sidebar.date_input("Enter Start Date", start_date_default)
-    end_date = st.sidebar.date_input("Enter End Date", end_date_default)
-    return query, start_date, end_date
 
 def fetch_and_process_news(query, start_date, end_date):
     GNews.language = 'en'
@@ -97,7 +88,7 @@ def cluster_and_generate_wordclouds(df):
         with st.container():
             expander = st.expander(f"Cluster {i+1} Summary and Word Cloud", expanded=True)
             with expander:
-                formatted_summary = "\n".join(textwrap.wrap(summary, width=150))
+                formatted_summary = "\n".join(textwrap.wrap(summary, width=850))
                 st.write(formatted_summary)
                 doc.add_heading(f'Cluster {i+1} Summary:', level=1)
                 doc.add_paragraph(formatted_summary)
@@ -118,22 +109,44 @@ def cluster_and_generate_wordclouds(df):
     output_doc.seek(0)
     return output_doc
 
+
+def setup_streamlit_ui():
+    st.title("News Scraper and Analyzer")
+    with st.form(key='search_form'):
+        #query = st.text_input('Search Query', value=st.session_state.query if 'query' in st.session_state else "")
+        query = st.text_input("Enter Keywords (separated by space)", 'aws cloud datacenter')
+        start_date = st.date_input('Start Date', value=st.session_state.start_date if 'start_date' in st.session_state else datetime.today() - timedelta(days=7))
+        end_date = st.date_input('End Date', value=st.session_state.end_date if 'end_date' in st.session_state else datetime.today())
+        search_button = st.form_submit_button(label='Search')
+        
+    return query, start_date, end_date, search_button
+
 def main():
-    query, start_date, end_date = setup_streamlit_ui()
-    if st.sidebar.button("Search"):
+    query, start_date, end_date, search_button = setup_streamlit_ui()
+    
+    if search_button:
+        st.session_state.query = query
+        st.session_state.start_date = start_date
+        st.session_state.end_date = end_date
+
         with st.spinner("Please wait while scraping the web..."):
-            df = fetch_and_process_news(query, start_date, end_date)
-            st.subheader("Results")
-            st.dataframe(df)
-            output_doc = cluster_and_generate_wordclouds(df)
-            st.sidebar.download_button(
-                label="Download Cluster Summary",
-                data=output_doc.getvalue(),
-                file_name=f"{query.split()[0]}_{query.split()[1]}_cluster_summary.docx",
-                mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                key="cluster_summary_docx",
-                help="Click to download the cluster summary document",
-            )
+            st.session_state.df = fetch_and_process_news(query, start_date, end_date)  # Placeholder, replace with your function
+            
+            st.session_state.output_doc = cluster_and_generate_wordclouds(st.session_state.df)  # Placeholder, replace with your function
+
+    if 'df' in st.session_state and not st.session_state.df.empty:
+        st.subheader("Results")
+        st.dataframe(st.session_state.df)
+    
+    if 'output_doc' in st.session_state:
+        file_name = f"{query.replace(' ', '_')}_cluster_summary.docx"
+        st.sidebar.download_button(
+            label="Download Cluster Summary",
+            data=st.session_state.output_doc.getvalue(),
+            file_name=file_name,
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            key="cluster_summary_docx"
+        )
 
 if __name__ == "__main__":
     main()
