@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from langid import classify
 from joblib import Parallel, delayed
 import streamlit as st
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.cluster import KMeans
 from sklearn.metrics import pairwise_distances_argmin_min
 from wordcloud import WordCloud, STOPWORDS
@@ -49,7 +49,7 @@ def process_article(article):
         source = url.split('/')[2] if url else 'N/A'
     if not is_english(article.get('title', '')):
         return None
-    title_parts = re.split(' ... - | - ', article.get('title', 'N/A'))
+    title_parts = re.split('... - | - ', article.get('title', 'N/A'))
     article_source = title_parts[1].strip() if len(title_parts) > 1 else 'N/A'
     result = {'Title1': article.get('title', 'N/A'), 'Source': source, 'Article_Source': article_source, 'URL': article.get('url', 'N/A')}
     full_article = get_full_article_with_nlp(article.get('url'))
@@ -73,11 +73,11 @@ def fetch_and_process_news(query, start_date, end_date):
 
 def cluster_and_generate_wordclouds(df):
     df['processed_summary'] = df['summary'].apply(lambda x: re.sub('[^A-Za-z]+', ' ', str(x)).lower())
-    tfidf_vectorizer = TfidfVectorizer(stop_words='english', max_df=0.7)
-    tfidf_matrix = tfidf_vectorizer.fit_transform(df['processed_summary'])
+    count_vectorizer = CountVectorizer(stop_words='english')
+    count_matrix = count_vectorizer.fit_transform(df['processed_summary'])
     num_clusters = 5
     km = KMeans(n_clusters=num_clusters, n_init=10)
-    km.fit(tfidf_matrix)
+    km.fit(count_matrix)
     clusters = km.labels_.tolist()
     texts_per_cluster = [[df.iloc[i]['summary'] for i in range(len(clusters)) if clusters[i] == j] for j in range(num_clusters)]
     for i, texts in enumerate(texts_per_cluster):
