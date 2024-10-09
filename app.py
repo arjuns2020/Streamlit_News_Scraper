@@ -73,7 +73,7 @@ def fetch_and_process_news(query, start_date, end_date):
 
 def cluster_and_generate_wordclouds(df):
     df['processed_summary'] = df['summary'].apply(lambda x: re.sub('[^A-Za-z]+', ' ', str(x)).lower())
-    count_vectorizer = CountVectorizer(stop_words='english')
+    count_vectorizer = CountVectorizer(stop_words='english', max_df=0.9)
     count_matrix = count_vectorizer.fit_transform(df['processed_summary'])
     num_clusters = 5
     km = KMeans(n_clusters=num_clusters, n_init=10)
